@@ -2,6 +2,8 @@
 
 A agnoster-based theme of oh-my-zsh
 
+![screenshot](http://i.gyazo.com/3399cf415cf8dcacf4c09631bd116ead.png)
+
 ## Goal
 
 The best of theme for me.
