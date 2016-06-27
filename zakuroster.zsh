@@ -2,13 +2,22 @@ CURRENT_BG='NONE'
 PRIMARY_FG=black
 
 # Characters
-SEGMENT_SEPARATOR="\ue0b0"
-PLUSMINUS="\u00b1"
-BRANCH="\ue0a0"
-PYTHON="\u2624"
-DETACHED="\u27a6"
-GEAR="\u2699"
-
+if [[ -n "$ZAKUROSTER_SIMPLE_PROMPT" ]]
+then
+  SEGMENT_SEPARATOR=""
+  PLUSMINUS=""
+  BRANCH=""
+  PYTHON=""
+  DETACHED=""
+  GEAR=""
+else
+  SEGMENT_SEPARATOR="\ue0b0"
+  PLUSMINUS="\u00b1"
+  BRANCH="\ue0a0"
+  PYTHON="\u2624"
+  DETACHED="\u27a6"
+  GEAR="\u2699"
+fi
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,
 # rendering default background/foreground.
@@ -16,7 +25,8 @@ prompt_segment() {
   local bg fg
   [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
   [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
-  if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]]; then
+  if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]];
+  then
     print -n "%{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%}"
   else
     print -n "%{$bg%}%{$fg%}"
@@ -108,8 +118,14 @@ prompt_circle() {
 
 prompt_zakuro_precmd() {
   vcs_info
-  PROMPT="╭─ %{%f%b%k%}$(prompt_zakuro_main)
+  if [[ -n "$ZAKUROSTER_SIMPLE_PROMPT" ]]
+    PROMPT="%{%f%b%k%}$(prompt_zakuro_main)
+- "
+  then
+  else
+    PROMPT="╭─ %{%f%b%k%}$(prompt_zakuro_main)
 ╰─$(prompt_circle) "
+  fi
 }
 
 prompt_zakuro_setup() {
